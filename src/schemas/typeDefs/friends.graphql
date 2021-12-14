@@ -1,0 +1,18 @@
+#Friend list
+#friends
+
+  type Query {
+    friends: [Friend]
+  }
+
+  # make copies of friends' id
+  type Friend {
+    id: String! #This is copy of the user'
+  }
+
+    
+  type Mutation {
+    # Multiple uploads are supported. See graphql-upload docs for details.
+    addFriend(id: String!): Friend
+	  deleteFriend(id: String!, type: String!): Friend
+  }

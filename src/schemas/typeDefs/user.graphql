@@ -1,0 +1,50 @@
+	scalar Date
+	
+	type Query {
+		users: [User]
+		user(id: String!): User
+	}
+
+	enum Role {
+		ADMIN
+		REVIEWER
+		USER
+	}
+
+	type User {
+		id: String!
+		username: String!
+		password: String!
+		email: String
+		friends: [Friend]
+		created: Date
+		token: String
+	}
+
+	input RegisterUserInput {
+		username: String!
+		password: String!
+		#confirmPassword: String!
+		email: String!
+		
+	}
+
+	type Mutation {
+		createUser(username: String!, email: String): User
+		LoginUser(email: String!, password: String!): User!
+		updateUser(id: String!, username: String!): User
+		RegisterUser(user: RegisterUserInput): User!
+		
+	}
+	
+  # how to query	
+  # addMessageMutation = gql`
+  #mutation addMessage($message: MessageInput!) {
+  #  addMessage(message: $message) {
+  #     id
+  #     text
+  #   }
+  # }
+ #`;
+	#
+

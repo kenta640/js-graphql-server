@@ -1,0 +1,20 @@
+#Post
+#post
+
+  type Query {
+      posts: [Post]
+      post(user: String): Post
+    }
+
+  type Post{
+    id: String!
+    userid: String! #userid of the posting person
+    text: String!
+  }
+
+    
+  type Mutation {
+    # Multiple uploads are supported. See graphql-upload docs for details.
+   
+    addPost(type: String!, userid: String!): Post
+  }
