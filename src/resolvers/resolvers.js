@@ -1,7 +1,7 @@
 const {User} = require('../models/models')
 const { generate } = require('shortid')
 const {GraphQLScalarType, Kind} = require('graphql');
-const { AuthenticationError, UserInputError } = require('apollo-server-errors');
+const { AuthenticationError, ValidationError, UserInputError } = require('apollo-server-errors');
 //const context = require('./context')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -28,9 +28,6 @@ const validateLogin = (email, password) => {
 }
 
 
-const validateRegister=(username, password, confirmPassword, email)=>{
-
-}
 
 
 const resolvers = {
@@ -90,7 +87,7 @@ const resolvers = {
         //const {errors, valid} = validateLogin(email, password)
         //if(!valid) throw new UserInputError('Error', {error})
         
-        const user = await User.findOne({where: {email}});
+        const user = await User.findOne({email: email});
         if(!user) throw new AuthenticationError('this user is not found')
 
         const match = await bcrypt.compare(password, user.password)
@@ -109,8 +106,13 @@ const resolvers = {
       async RegisterUser(_, { user}) {
         //const {errors, valid} = validateRegister(username, password, confirmPassword, email)
         //if(!valid) throw UserInputError('Error', { errors });
-        //const user = await User.findOne({ username });
-        //if (user) throw new ValidationError('This username is not valid!');
+
+        const uniqueName = user.username
+
+        tempuser = await User.findOne({username: uniqueName});
+        console.log(user.username)
+        console.log(tempuser)
+        if (tempuser) throw new ValidationError('This username is not valid!');
        
         const newUser = new User({
           id: generate(),
