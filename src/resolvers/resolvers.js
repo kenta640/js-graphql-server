@@ -1,4 +1,4 @@
-const {User} = require('../models/models')
+const {User, Post} = require('../models/models')
 const { generate } = require('shortid')
 const {GraphQLScalarType, Kind} = require('graphql');
 const { AuthenticationError, ValidationError, UserInputError } = require('apollo-server-errors');
@@ -20,15 +20,6 @@ const getToken = ({id, username, email}) => {
       )
 
 }
-
-const validateLogin = (email, password) => {
-
-
-  
-}
-
-
-
 
 const resolvers = {
     Date:  new GraphQLScalarType({
@@ -108,7 +99,6 @@ const resolvers = {
         //if(!valid) throw UserInputError('Error', { errors });
 
         const uniqueName = user.username
-
         tempuser = await User.findOne({username: uniqueName});
         console.log(user.username)
         console.log(tempuser)
@@ -153,25 +143,10 @@ const resolvers = {
         cache.set(id, username);
         return user;
       },
-      addFriend: (_, { friend_id }, {user}) => {
-        if (!user) {
-          throw new Error('You are not authenticated!')
-        }
-        const friendObj = new Friend({ friend_id});
-        //cache.set(id, username);
-        return friendObj.save()
-        .then(result=>{
-          return {...result._doc}
-        })
-        .catch (err=> {
-          console.error(err);
-        })
-      },
-      addPost: (_, { id, userid}) => {
-        if (!user) {
-          throw new Error('You are not authenticated!')
-        }
-        const postObj = new Post({ id, userid });
+      //Set user id (email) on frontend
+      addPost: (_, { id, text }) => {
+
+        const postObj = new Post({ id, text });
         //cache.set(id, username);
         return postObj.save()
         .then(result=>{

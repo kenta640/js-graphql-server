@@ -36,13 +36,28 @@ const UserSchema = new Schema({
     }
 })
 
-
+const PostSchema = new Schema({   
+    id: {
+        //postid
+        type: String,
+        required: true
+    },
+    text: {
+        type: String,
+        required: true
+    },     
+    created: {
+        type: Date,
+    },
+})
 
 
 const User = mongoose.model('User', UserSchema)
 const Friend = mongoose.model('Friend', FriendSchema)
+const Post = mongoose.model('Post', PostSchema)
 
 module.exports = {
     User,
-    Friend
+    Friend,
+    Post
 }

@@ -10,7 +10,7 @@ const mongoose = require('mongoose')
 // Provide resolver functions for your schema field
 const typeDefs = require('./schemas/typedefs')
 const resolvers = require('./resolvers/resolvers')
-const {context} = require('./context')
+
 
 
 async function startServer(){
