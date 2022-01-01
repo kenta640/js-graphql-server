@@ -53,14 +53,8 @@ const resolvers = {
       user: async (parent, args, context, info) => {
         return await User.findOne({ id: args.id })
       },
-      posts (parent, args, context, info) {
-        return Post.find()
-          .then(post => {
-            return {...post._doc}
-          })
-          .catch (err=>{
-            console.error(err)
-          })
+      posts: async (parent, args, context, info) => {
+        return await Post.find({id: args.id})
       },
       post: async (parent, args, context, info) => {
         return await Post.findOne({ id: args.id })
