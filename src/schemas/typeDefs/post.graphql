@@ -8,7 +8,8 @@
 
 
   type Query {
-    posts: [Post]
+    posts(id: String!): [Post]
+    post: Post!
   }
     
   type Mutation {

@@ -39,12 +39,9 @@ const resolvers = {
       },
     }),
     Query: {
-
-      
-
       users (parent, args, context, info)  {
-        if (!context.user||!context.user.roles.includes('admin')) 
-        return null;
+        //if (!context.user||!context.user.roles.includes('admin')) 
+        //return null;
         return User.find()
           .then(user => {
             return user.map(r=>({...r._doc}))
@@ -53,25 +50,23 @@ const resolvers = {
             console.error(err)
           });
       },
-      user (parent, args, context, info) {
-        return users.findOne({ _id: args.id })
-          .then (user=> {
-            return {...user._doc}
+      user: async (parent, args, context, info) => {
+        return await User.findOne({ id: args.id })
+      },
+      posts (parent, args, context, info) {
+        return Post.find()
+          .then(post => {
+            return {...post._doc}
           })
           .catch (err=>{
             console.error(err)
           })
       },
-      friends (parent, args, context, info) {
-        return Friend.find()
-          .then(user => {
-            return friemd.map(r=>({...r._doc}))
-          })
-          .catch (err=>{
-            console.error(err)
-          });
+      post: async (parent, args, context, info) => {
+        return await Post.findOne({ id: args.id })
       },
     },
+
     Mutation: {
       async LoginUser(_, { email, password}) {
 
