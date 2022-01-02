@@ -8,6 +8,7 @@
 
 
   type Query {
+    allPosts: [Post]
     posts(id: String!): [Post]
     post: Post!
   }

@@ -53,6 +53,9 @@ const resolvers = {
       user: async (parent, args, context, info) => {
         return await User.findOne({ id: args.id })
       },
+      allPosts: async (parent, args, context, info) => {
+        return await Post.find()
+      },
       posts: async (parent, args, context, info) => {
         return await Post.find({id: args.id})
       },
