@@ -52,12 +52,12 @@ const PostSchema = new Schema({
 })
 
 
-const User = mongoose.model('User', UserSchema)
-const Friend = mongoose.model('Friend', FriendSchema)
-const Post = mongoose.model('Post', PostSchema)
+const Users = mongoose.model('User', UserSchema)
+const Friends = mongoose.model('Friend', FriendSchema)
+const Posts = mongoose.model('Post', PostSchema)
 
 module.exports = {
-    User,
-    Friend,
-    Post
+    Users,
+    Friends,
+    Posts
 }

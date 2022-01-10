@@ -4,6 +4,7 @@
   type Post{
     id: String!
     text: String!
+    user: [User]
   }
 
 
@@ -11,6 +12,7 @@
     allPosts: [Post]
     posts(id: String!): [Post]
     post: Post!
+
   }
     
   type Mutation {

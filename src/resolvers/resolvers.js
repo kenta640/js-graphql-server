@@ -1,4 +1,4 @@
-const {User, Post} = require('../models/models')
+const {Users, Posts} = require('../models/models')
 const { generate } = require('shortid')
 const {GraphQLScalarType, Kind} = require('graphql');
 const { AuthenticationError, ValidationError, UserInputError } = require('apollo-server-errors');
@@ -50,17 +50,17 @@ const resolvers = {
             console.error(err)
           });
       },
-      user: async (parent, args, context, info) => {
-        return await User.findOne({ id: args.id })
+      userById: async (parent, args, context, info) => {
+        return await Users.findOne({ id: args.id })
       },
       allPosts: async (parent, args, context, info) => {
-        return await Post.find()
+        return await Posts.find()
       },
       posts: async (parent, args, context, info) => {
-        return await Post.find({id: args.id})
+        return await Posts.find({id: args.id})
       },
       post: async (parent, args, context, info) => {
-        return await Post.findOne({ id: args.id })
+        return await Posts.findOne({ id: args.id })
       },
     },
 
@@ -113,22 +113,6 @@ const resolvers = {
           
           token
         };
-      },
-
-      createUser: (_, { username, email}) => {
-        
-        const id = generate();
-        const userObj = new User({   id, 
-                                    username, 
-                                    email});
-        //cache.set(id, username);
-        return userObj.save()
-        .then(result=>{
-          return {...result._doc}
-        })
-        .catch (err=> {
-          console.error(err);
-        })
       },
       updateUser: (_, { username, id }) => {
         const user = { username, id };

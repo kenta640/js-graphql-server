@@ -1,9 +1,6 @@
 	scalar Date
 	
-	type Query {
-		users: [User]
-		user(id: String!): User
-	}
+
 
 	enum Role {
 		ADMIN
@@ -27,6 +24,11 @@
 		#confirmPassword: String!
 		email: String!
 		
+	}
+
+		type Query {
+		users: [User]
+		userById(id: String!): User
 	}
 
 	type Mutation {
