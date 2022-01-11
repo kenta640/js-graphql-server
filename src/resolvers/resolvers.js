@@ -104,7 +104,9 @@ const resolvers = {
           token
         };
       },
-      
+      RemoveUser: async (args)=>{
+        return Users.remove({id: args.id})
+      },
       //Set user id (email) on frontend
       addPost: (_, { id, text }) => {
 

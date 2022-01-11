@@ -23,7 +23,6 @@
 		password: String!
 		#confirmPassword: String!
 		email: String!
-		
 	}
 
 	type Query {
@@ -32,11 +31,10 @@
 	}
 
 	type Mutation {
-		createUser(username: String!, email: String): User
 		LoginUser(email: String!, password: String!): User!
 		updateUser(id: String!, username: String!): User
 		RegisterUser(user: RegisterUserInput): User!
-		
+		RemoveUser(id: String): User
 	}
 	
   # how to query	
