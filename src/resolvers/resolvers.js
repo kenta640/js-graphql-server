@@ -42,7 +42,7 @@ const resolvers = {
       users (parent, args, context, info)  {
         //if (!context.user||!context.user.roles.includes('admin')) 
         //return null;
-        return User.find()
+        return Users.find()
           .then(user => {
             return user.map(r=>({...r._doc}))
           })
@@ -61,7 +61,7 @@ const resolvers = {
         //const {errors, valid} = validateLogin(email, password)
         //if(!valid) throw new UserInputError('Error', {error})
         
-        const user = await User.findOne({email: email});
+        const user = await Users.findOne({email: email});
         if(!user) throw new AuthenticationError('this user is not found')
 
         const match = await bcrypt.compare(password, user.password)
