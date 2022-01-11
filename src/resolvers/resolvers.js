@@ -53,6 +53,9 @@ const resolvers = {
       allPosts: async (parent, args, context, info) => {
         return await Posts.find()
       },
+      postsById: async (parent, args, context, info) => {
+        return await Posts.find({id: args.id})
+      },
     },
 
     Mutation: {

@@ -12,7 +12,7 @@
 
   type Query {
     allPosts: [Post]
-    posts(id: String!): [Post]
+    postsById(id: String!): [Post]
     post: Post!
 
   }
