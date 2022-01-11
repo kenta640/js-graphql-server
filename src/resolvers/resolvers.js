@@ -50,17 +50,8 @@ const resolvers = {
             console.error(err)
           });
       },
-      userById: async (parent, args, context, info) => {
-        return await Users.findOne({ id: args.id })
-      },
       allPosts: async (parent, args, context, info) => {
         return await Posts.find()
-      },
-      posts: async (parent, args, context, info) => {
-        return await Posts.find({id: args.id})
-      },
-      post: async (parent, args, context, info) => {
-        return await Posts.findOne({ id: args.id })
       },
     },
 
@@ -91,7 +82,7 @@ const resolvers = {
         //if(!valid) throw UserInputError('Error', { errors });
 
         const uniqueName = user.username
-        tempuser = await User.findOne({username: uniqueName});
+        tempuser = await Users.findOne({username: uniqueName});
         console.log(user.username)
         console.log(tempuser)
         if (tempuser) throw new ValidationError('This username is not valid!');
@@ -110,15 +101,10 @@ const resolvers = {
         return {
           id: res._id,
           ...res._doc, 
-          
           token
         };
       },
-      updateUser: (_, { username, id }) => {
-        const user = { username, id };
-        cache.set(id, username);
-        return user;
-      },
+      
       //Set user id (email) on frontend
       addPost: (_, { id, text }) => {
 
@@ -132,7 +118,12 @@ const resolvers = {
           console.error(err);
         })
       },
-    }
+    },
+    Post: {
+      user: async (parent, args)=>{
+        return await Users.findOne({id: parent.id})
+      }
+    },
   };
   
   module.exports = resolvers
