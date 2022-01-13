@@ -38,7 +38,7 @@ const UserSchema = new Schema({
 
 const PostSchema = new Schema({   
     id: {
-        //postid
+        //userid
         type: String,
         required: true
     },
@@ -49,6 +49,9 @@ const PostSchema = new Schema({
     created: {
         type: Date,
     },
+    good: {
+        type: Number,
+    }
 })
 
 

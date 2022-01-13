@@ -55,7 +55,7 @@ const resolvers = {
       },
       postsById: async (parent, args, context, info) => {
         return await Posts.find({id: args.id})
-      },
+      }
     },
 
     Mutation: {
@@ -113,7 +113,7 @@ const resolvers = {
       //Set user id (email) on frontend
       addPost: (_, { id, text }) => {
 
-        const postObj = new Post({ id, text });
+        const postObj = new Posts({ id, text, good: 0 });
         //cache.set(id, username);
         return postObj.save()
         .then(result=>{
@@ -123,10 +123,21 @@ const resolvers = {
           console.error(err);
         })
       },
+      addReply: async (parent, args, context, info) => {
+        return await Posts.find({id: args.id, replyTo: args.replyTo, text: args.text})
+      },
+      addGood: async (parent, args, content, info) => {
+        return await Posts.updateOne(
+          ({_id: args._id}, {$inc:{ good : 1}})//increment by 1
+        )
+      }
     },
     Post: {
       user: async (parent, args)=>{
         return await Users.findOne({id: parent.id})
+      },
+      replies: async (parent) =>{
+        return await Posts.find({id: parent.id, replies: parent.replies})
       }
     },
   };

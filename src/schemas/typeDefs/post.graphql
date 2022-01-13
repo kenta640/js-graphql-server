@@ -7,6 +7,8 @@
     id: String!
     text: String!
     user: User
+    replies: [Post]
+    good: Int
   }
 
 
@@ -14,10 +16,11 @@
     allPosts: [Post]
     postsById(id: String!): [Post]
     post: Post!
-
   }
     
   type Mutation {
     # Multiple uploads are supported. See graphql-upload docs for details.
     addPost(id: String, text: String): Post
+    addReply(id: String, replyTo: String, text: String): Post
+    addGood(_id: String, good: Int): Post
   }
