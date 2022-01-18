@@ -1,4 +1,4 @@
-const {Users, Posts} = require('../models/models')
+const {Users, Posts, Good} = require('../models/models')
 const { generate } = require('shortid')
 const {GraphQLScalarType, Kind} = require('graphql');
 const { AuthenticationError, ValidationError, UserInputError } = require('apollo-server-errors');
@@ -111,24 +111,21 @@ const resolvers = {
         return Users.remove({id: args.id})
       },
       //Set user id (email) on frontend
-      addPost: (_, { id, text }) => {
-
-        const postObj = new Posts({ id, text, good: 0 });
+      addPost:async ( _, { id, text }) => {
+        
+        const postObj = await new Posts({ id, text, }).save();
+        await new Good({postid: postObj._id}).save()
         //cache.set(id, username);
-        return postObj.save()
-        .then(result=>{
-          return {...result._doc}
-        })
-        .catch (err=> {
-          console.error(err);
-        })
+        
+        return postObj
       },
       addReply: async (parent, args, context, info) => {
         return await Posts.find({id: args.id, replyTo: args.replyTo, text: args.text})
       },
+      //It does not return anything but works fine.
       addGood: async (parent, args, content, info) => {
-        return await Posts.updateOne(
-          ({_id: args._id}, {$inc:{ good : 1}})//increment by 1
+        return await Good.updateOne(
+          ({postid: args._id}, {$inc:{ good : 1}})//increment by 1
         )
       }
     },
@@ -138,7 +135,13 @@ const resolvers = {
       },
       replies: async (parent) =>{
         return await Posts.find({id: parent.id, replies: parent.replies})
-      }
+      },
+      good: async (parent, args)=>{
+        console.log(parent._id)
+
+        return await Good.findOne({postid: parent._id})//Find by object id
+
+      },
     },
   };
   

@@ -49,8 +49,19 @@ const PostSchema = new Schema({
     created: {
         type: Date,
     },
+})
+
+const GoodSchema = new Schema({
+    postid: {
+        type: String,
+        required: true
+    },
     good: {
         type: Number,
+        default: 0
+    },
+    users: {
+        id: [String]
     }
 })
 
@@ -58,9 +69,10 @@ const PostSchema = new Schema({
 const Users = mongoose.model('User', UserSchema)
 const Friends = mongoose.model('Friend', FriendSchema)
 const Posts = mongoose.model('Post', PostSchema)
-
+const Good = mongoose.model('Good', GoodSchema)
 module.exports = {
     Users,
     Friends,
-    Posts
+    Posts, 
+    Good
 }

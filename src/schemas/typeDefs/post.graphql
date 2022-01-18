@@ -4,13 +4,20 @@
 
 
   type Post{
+    _id: String #Object id of the post
     id: String!
     text: String!
     user: User
     replies: [Post]
-    good: Int
+    good: Good
   }
 
+  type Good {
+    postid: Post #Object ID  of the Post
+    good: Int
+    Pressed: [User]#Store Users that pressed the button
+    
+  }
 
   type Query {
     allPosts: [Post]
