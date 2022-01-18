@@ -29,5 +29,5 @@
     # Multiple uploads are supported. See graphql-upload docs for details.
     addPost(id: String, text: String): Post
     addReply(id: String, replyTo: String, text: String): Post
-    addGood(_id: String, good: Int): Post
+    addGood(_id: String): Good
   }
