@@ -124,9 +124,15 @@ const resolvers = {
       },
       
       addGood: async (parent, args, content, info) => {
-        return await Good.updateOne(
-          ({postid: args._id}, {$inc:{ good : 1}})//increment by 1
-        )
+        console.log(args.postid)
+        return await Good.bulkWrite([
+          { updateOne :
+                {
+                  "filter" : { "postid" : args.postid },
+                  "update" : { $inc : { "good" : 1 } }
+                }
+       },])
+        //return await target.updateOne({postid: args.postid}, {$inc:{good: 1}})
       }
     },
     Post: {
