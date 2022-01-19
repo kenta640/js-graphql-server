@@ -122,26 +122,29 @@ const resolvers = {
       addReply: async (parent, args, context, info) => {
         return await Posts.find({id: args.id, replyTo: args.replyTo, text: args.text})
       },
-      //It does not return anything but works fine.
+      
       addGood: async (parent, args, content, info) => {
-        return await Good.updateOne(
+        return await Good.findOne(
           ({postid: args._id}, {$inc:{ good : 1}})//increment by 1
         )
       }
     },
     Post: {
       user: async (parent, args)=>{
-        return await Users.findOne({id: parent.id})
+        return await Users.findOne({id: args.id})
       },
       replies: async (parent) =>{
         return await Posts.find({id: parent.id, replies: parent.replies})
       },
       good: async (parent, args)=>{
-        console.log(parent._id)
 
-        return await Good.findOne({postid: parent._id})//Find by object id
+        return await Good.updateOne({postid: parent._id}, {$inc: { good: 1 }})//Find by object id
 
       },
+      /** 
+      pressed: async (parent, args)=>{
+        return await Users.findOne({id: parent.pressed})
+      },*/
     },
   };
   

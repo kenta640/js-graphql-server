@@ -53,16 +53,13 @@ const PostSchema = new Schema({
 
 const GoodSchema = new Schema({
     postid: {
-        type: String,
+        type: mongoose.Types.ObjectId,
         required: true
     },
     good: {
         type: Number,
         default: 0
     },
-    users: {
-        id: [String]
-    }
 })
 
 
