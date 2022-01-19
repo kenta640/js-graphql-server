@@ -131,7 +131,7 @@ const resolvers = {
     },
     Post: {
       user: async (parent, args)=>{
-        return await Users.findOne({id: args.id})
+        return await Users.findOne({id: parent.id})
       },
       replies: async (parent) =>{
         return await Posts.find({id: parent.id, replies: parent.replies})
