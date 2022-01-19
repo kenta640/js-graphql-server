@@ -124,7 +124,7 @@ const resolvers = {
       },
       
       addGood: async (parent, args, content, info) => {
-        return await Good.findOne(
+        return await Good.updateOne(
           ({postid: args._id}, {$inc:{ good : 1}})//increment by 1
         )
       }
@@ -138,7 +138,7 @@ const resolvers = {
       },
       good: async (parent, args)=>{
 
-        return await Good.updateOne({postid: parent._id}, {$inc: { good: 1 }})//Find by object id
+        return await Good.findOne({postid: parent._id})//Find by object id
 
       },
       /** 
