@@ -15,7 +15,7 @@
   type Good {
     postid: String #Object ID  of the Post
     good: Int
-    Pressed: [User]#Store Users that pressed the button
+    
     
   }
 
