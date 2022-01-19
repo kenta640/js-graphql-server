@@ -13,7 +13,7 @@
   }
 
   type Good {
-    postid: mongoose.Types.ObjectId #Object ID  of the Post
+    postid: String #Object ID  of the Post
     good: Int
     Pressed: [User]#Store Users that pressed the button
     

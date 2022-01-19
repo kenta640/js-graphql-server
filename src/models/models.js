@@ -53,7 +53,7 @@ const PostSchema = new Schema({
 
 const GoodSchema = new Schema({
     postid: {
-        type: mongoose.Types.ObjectId,
+        type: String,
         required: true
     },
     good: {
