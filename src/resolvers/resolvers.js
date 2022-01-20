@@ -55,7 +55,7 @@ const resolvers = {
           });
       },
       allPosts: async (parent, args, context, info) => {
-        return await Posts.find().sort
+        return await Posts.find().sort({created: -1});
       },
       postsById: async (parent, args, context, info) => {
         return await Posts.find({id: args.id})
