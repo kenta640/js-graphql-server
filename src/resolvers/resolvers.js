@@ -6,6 +6,10 @@ const { AuthenticationError, ValidationError, UserInputError } = require('apollo
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
+//PubSub for real time updates
+const {PubSub} =require("graphql-subscriptions")
+const pubsub = new PubSub();
+const POST_ADDED = "POST_ADDED";
 
 const getToken = ({id, username, email}) => {
 
@@ -90,7 +94,7 @@ const resolvers = {
         console.log(tempuser)
         if (tempuser) throw new ValidationError('This username is not valid!');
        
-        const newUser = new User({
+        const newUser = new Users({
           id: generate(),
           username: user.username,
           password: await bcrypt.hash(user.password, 10),
@@ -116,7 +120,7 @@ const resolvers = {
         const postObj = await new Posts({ id, text, }).save();
         await new Good({postid: postObj._id}).save()
         //cache.set(id, username);
-        
+        await pubsub.publish(POST_ADDED, { postAdded: postObj });
         return postObj
       },
       addReply: async (parent, args, context, info) => {
@@ -132,7 +136,7 @@ const resolvers = {
                   "update" : { $inc : { "good" : 1 } }
                 }
        },])
-        //return await target.updateOne({postid: args.postid}, {$inc:{good: 1}})
+        
       }
     },
     Post: {
@@ -152,6 +156,12 @@ const resolvers = {
         return await Users.findOne({id: parent.pressed})
       },*/
     },
+
+    Subscription: {
+      postAdded: {
+        subscribe: () => pubsub.asyncIterator([POST_ADDED])
+      }
+    }
   };
   
   module.exports = resolvers

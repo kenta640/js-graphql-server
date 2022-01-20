@@ -31,3 +31,7 @@
     addReply(id: String, replyTo: String, text: String): Post
     addGood(postid: String): Good
   }
+
+  type Subscription {
+    postAdded: Post!
+  }
