@@ -55,7 +55,7 @@ const resolvers = {
           });
       },
       allPosts: async (parent, args, context, info) => {
-        return await Posts.find()
+        return await Posts.find().sort
       },
       postsById: async (parent, args, context, info) => {
         return await Posts.find({id: args.id})
@@ -117,7 +117,9 @@ const resolvers = {
       //Set user id (email) on frontend
       addPost:async ( _, { id, text }) => {
         
-        const postObj = await new Posts({ id, text, }).save();
+        const postObj = await new Posts({ id, 
+                                          text, 
+                                          created: new Date().toISOString()}).save();
         await new Good({postid: postObj._id}).save()
         //cache.set(id, username);
         await pubsub.publish(POST_ADDED, { postAdded: postObj });
