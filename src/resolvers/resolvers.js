@@ -127,7 +127,7 @@ const resolvers = {
       },
       deletePost:async (parent, args, content, info) => {
         try{
-          await Posts.deleteOne({ _id: args._id})
+          await Posts.deleteOne({ _id: args._id, id: args.id})
         } catch (e) {
           print(e);
        }
@@ -138,20 +138,20 @@ const resolvers = {
       
       addGood: async (parent, args, content, info) => {
         console.log(args.postid)
-        try{
-          await Good.bulkWrite([
-            { updateOne :
-                  {
-                    "filter" : { "postid" : args.postid },
-                    "update" : { $inc : { "good" : 1 } }
-                  }
-        },])
-      } catch(e){
-        print(e);
-        }
-        
-      }
-    },
+          try{
+            await Good.bulkWrite([
+              { updateOne :
+                    {
+                      "filter" : { "postid" : args.postid },
+                      "update" : { $inc : { "good" : 1 } }
+                    }
+          },])
+          } catch(e){
+            print(e);
+            }
+            
+          }
+      },
     Post: {
       user: async (parent, args)=>{
         return await Users.findOne({id: parent.id})
