@@ -125,19 +125,30 @@ const resolvers = {
         await pubsub.publish(POST_ADDED, { postAdded: postObj });
         return postObj
       },
+      deletePost:async (parent, args, content, info) => {
+        try{
+          await Posts.deleteOne({ _id: args._id})
+        } catch (e) {
+          print(e);
+       }
+      },
       addReply: async (parent, args, context, info) => {
         return await Posts.find({id: args.id, replyTo: args.replyTo, text: args.text})
       },
       
       addGood: async (parent, args, content, info) => {
         console.log(args.postid)
-        return await Good.bulkWrite([
-          { updateOne :
-                {
-                  "filter" : { "postid" : args.postid },
-                  "update" : { $inc : { "good" : 1 } }
-                }
-       },])
+        try{
+          await Good.bulkWrite([
+            { updateOne :
+                  {
+                    "filter" : { "postid" : args.postid },
+                    "update" : { $inc : { "good" : 1 } }
+                  }
+        },])
+      } catch(e){
+        print(e);
+        }
         
       }
     },
