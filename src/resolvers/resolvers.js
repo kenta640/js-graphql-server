@@ -5,11 +5,28 @@ const { AuthenticationError, ValidationError, UserInputError } = require('apollo
 //const context = require('./context')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const nodemailer = require("nodemailer");
+require('dotenv/config')
 
 //PubSub for real time updates
 const {PubSub} =require("graphql-subscriptions")
 const pubsub = new PubSub();
 const POST_ADDED = "POST_ADDED";
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.GMAIL_ADDRESS,
+    pass: process.env.GMAIL_PASSWORD
+  }
+});
+
+const mailOptions = (email)= {
+  from: process.env.GMAIL_ADDRESS,
+  to: email,
+  subject: 'Sending Email using Node.js',
+  text: 'That was easy!'
+};
 
 const getToken = ({id, username, email}) => {
 
@@ -93,7 +110,16 @@ const resolvers = {
         console.log(user.username)
         console.log(tempuser)
         if (tempuser) throw new ValidationError('This username is not valid!');
-       
+       /** 
+        const mailOption = mailOptions(user.email)
+        transporter.sendMail(mailOption, function(error, info){
+          if (error) {
+            console.log(error);
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        }); */
+
         const newUser = new Users({
           id: generate(),
           username: user.username,
