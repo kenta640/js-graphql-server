@@ -110,7 +110,7 @@ const resolvers = {
         console.log(user.username)
         console.log(tempuser)
         if (tempuser) throw new ValidationError('This username is not valid!');
-       /** 
+       /** //sends email and validate if the email is valid
         const mailOption = mailOptions(user.email)
         transporter.sendMail(mailOption, function(error, info){
           if (error) {
