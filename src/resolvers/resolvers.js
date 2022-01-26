@@ -13,6 +13,7 @@ const {PubSub} =require("graphql-subscriptions")
 const pubsub = new PubSub();
 const POST_ADDED = "POST_ADDED";
 
+/**
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -26,7 +27,7 @@ const mailOptions = (email)= {
   to: email,
   subject: 'Sending Email using Node.js',
   text: 'That was easy!'
-};
+}; */
 
 const getToken = ({id, username, email}) => {
 
@@ -119,7 +120,7 @@ const resolvers = {
             console.log('Email sent: ' + info.response);
           }
         }); */
-
+        
         const newUser = new Users({
           id: generate(),
           username: user.username,
@@ -154,6 +155,7 @@ const resolvers = {
       deletePost:async (parent, args, content, info) => {
         try{
           await Posts.deleteOne({ _id: args._id, id: args.id})
+          await Good.deleteOne({postid: args._id})
         } catch (e) {
           print(e);
        }
@@ -174,26 +176,63 @@ const resolvers = {
           },])
           } catch(e){
             print(e);
-            }
-            
           }
+            
       },
-    Post: {
-      user: async (parent, args)=>{
-        return await Users.findOne({id: parent.id})
-      },
-      replies: async (parent) =>{
-        return await Posts.find({id: parent.id, replies: parent.replies})
-      },
-      good: async (parent, args)=>{
 
-        return await Good.findOne({postid: parent._id})//Find by object id
+      addFollow: async (parent, args) => {
+        try {
+          await Users.bulkWrite([
+            {
+              "filter" : { "id" : parent.id },
+              "update": {$push: {follow: args.id}}
+            }
+          ])
+        } catch (e) {
+          print(e)
+        }
+      }
 
       },
-      /** 
-      pressed: async (parent, args)=>{
-        return await Users.findOne({id: parent.pressed})
-      },*/
+
+      User: {
+        follow: async (parent)=>{
+          
+          let follow = []
+          
+          parent.follow.forEach(
+            (element)=>{
+              if(typeof element==="string"){
+                follow.push(Users.findOne({id: element}))
+              }
+
+            }
+          )
+          return follow;
+          
+         /** 
+          let follow=[]
+          console.time('promise_all');
+          const ids = parent.follow
+          const response = await Promise.all(ids.map(async (id) => {
+            return follow.push(Users.findOne({id: id})).promise()
+          }))
+          console.log(response)
+          console.timeEnd('promise_all');
+          */
+        }
+
+      },
+      Post: {
+        user: async (parent, args)=>{
+          return await Users.findOne({id: parent.id})
+        },
+        replies: async (parent) =>{
+          return await Posts.find({id: parent.id, replies: parent.replies})
+        },
+        good: async (parent, args)=>{
+          return await Good.findOne({postid: parent._id})//Find by object id
+        },
     },
 
     Subscription: {
@@ -201,6 +240,6 @@ const resolvers = {
         subscribe: () => pubsub.asyncIterator([POST_ADDED])
       }
     }
-  };
+  }
   
   module.exports = resolvers

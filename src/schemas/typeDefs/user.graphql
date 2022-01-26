@@ -13,7 +13,7 @@
 		username: String!
 		password: String!
 		email: String
-		friends: [Friend]
+		follow: [User]
 		created: Date
 		token: String
 	}
@@ -27,7 +27,7 @@
 
 	type Query {
 		users: [User]
-		userById(id: String!): User
+		#userById(id: String!): User
 	}
 
 	type Mutation {
@@ -35,6 +35,7 @@
 		updateUser(id: String!, username: String!): User
 		RegisterUser(user: RegisterUserInput): User!
 		RemoveUser(id: String): User
+		addFollow(id: String): User
 	}
 	
 

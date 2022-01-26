@@ -20,9 +20,12 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    follow: {
+        type: [String],
+        default: ["n-J6T8zbX","SBKNruDGX"]
+    },
     password: {
         type: String,
-        required: true
     },
     email: {
         type: String,
