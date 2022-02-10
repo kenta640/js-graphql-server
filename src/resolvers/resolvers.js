@@ -12,7 +12,7 @@ require('dotenv/config')
 const {PubSub} =require("graphql-subscriptions")
 const pubsub = new PubSub();
 const POST_ADDED = "POST_ADDED";
-
+const GOOD_ADDED = "GOOD_ADDED"
 /**
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -75,9 +75,15 @@ const resolvers = {
       allPosts: async (parent, args, context, info) => {
         return await Posts.find().sort({created: -1});
       },
+      topPosts: async (parent, args, context, info) => {
+        return await Posts.find().sort({created: -1}).limit(16);
+      },
       postsById: async (parent, args, context, info) => {
         return await Posts.find({id: args.id})
-      }
+      },
+      postByObjId: async (parent, args, context, info) => {
+        return await Posts.findOne({_id: args._id})
+      },
     },
 
     Mutation: {
@@ -238,6 +244,9 @@ const resolvers = {
     Subscription: {
       postAdded: {
         subscribe: () => pubsub.asyncIterator([POST_ADDED])
+      },
+      goodAdded: {
+        subscribe:() => pubsub.asyncIterator([GOOD_ADDED])
       }
     }
   }

@@ -1,14 +1,6 @@
 const mongoose = require('mongoose')
 const { Schema } = mongoose
 
-const FriendSchema = new Schema({
-    
-    id: {
-        type: String,
-        required: true
-    },
-    
-})
 
 const UserSchema = new Schema({
     id: {
@@ -36,7 +28,12 @@ const UserSchema = new Schema({
     },
     token: {
         type: String,
-    }
+    },
+    userType: {
+        type: String,
+        enum: ['ADMIN', 'USER'],
+        default: 'USER'
+    }, 
 })
 
 const PostSchema = new Schema({   
@@ -67,12 +64,10 @@ const GoodSchema = new Schema({
 
 
 const Users = mongoose.model('User', UserSchema)
-const Friends = mongoose.model('Friend', FriendSchema)
 const Posts = mongoose.model('Post', PostSchema)
 const Good = mongoose.model('Good', GoodSchema)
 module.exports = {
     Users,
-    Friends,
     Posts, 
     Good
 }

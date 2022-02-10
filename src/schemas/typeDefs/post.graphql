@@ -16,12 +16,12 @@
   type Good {
     postid: String #Object ID  of the Post
     good: Int
-    
-    
   }
 
   type Query {
     allPosts: [Post]
+    topPosts: [Post]
+    postByObjId(_id: String!): Post
     postsById(id: String!): [Post]
     post: Post!
   }
@@ -35,5 +35,6 @@
   }
 
   type Subscription {
+    goodAdded: Good
     postAdded: Post!
   }

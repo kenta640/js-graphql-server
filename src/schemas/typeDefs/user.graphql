@@ -4,7 +4,6 @@
 
 	enum Role {
 		ADMIN
-		REVIEWER
 		USER
 	}
 
@@ -16,6 +15,7 @@
 		follow: [User]
 		created: Date
 		token: String
+		userType: Role
 	}
 
 	input RegisterUserInput {
